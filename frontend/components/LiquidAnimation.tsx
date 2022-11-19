@@ -1,4 +1,5 @@
 import { useEffect } from "react";
+import { keyframes } from 'styled-components';
 
 
 const bubbleWrapperStyles: React.CSSProperties = {
@@ -10,16 +11,6 @@ const bubbleWrapperStyles: React.CSSProperties = {
   pointerEvents: 'none'
 }
 
-const bubbleStyles: React.CSSProperties = {
-  height: '300px',
-  width: '300px',
-  backgroundColor: '#2196F3',
-  position: 'absolute',
-  left: '50%',
-  top: '100%',
-  animation: 'wave 2s ease-in-out infinite',
-}
-
 
 export function LiquidAnimation(): JSX.Element {
 
@@ -28,7 +19,7 @@ export function LiquidAnimation(): JSX.Element {
     const animateBubble = (x: number) => {
       const bubble = document.createElement('div');
       bubble.className = 'bubble';
-      bubble.style.left = `${x}px`
+      bubble.style.left = `${ x }px`
       wrapper!.appendChild(bubble);
       setTimeout(() => wrapper!.removeChild(bubble), 2000)
 
