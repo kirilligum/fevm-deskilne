@@ -1,6 +1,6 @@
+import { ConnectionStatusCard } from '../components/ConnectionStatusCard'
 import Layout from '../components/layout'
 import styles from '../styles/Home.module.css'
-import { ConnectionStatusCard } from '../components/ConnectionStatusCard'
 
 export default function Profile() {
   return (

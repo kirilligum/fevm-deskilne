@@ -1,9 +1,9 @@
-import Link from 'next/link'
 import { useWeb3Modal, Web3Button } from '@web3modal/react'
-import Layout from '../components/layout'
-import styles from '../styles/Home.module.css'
+import Link from 'next/link'
 import { useAccount } from 'wagmi'
+import Layout from '../components/layout'
 import { LiquidAnimation } from '../components/LiquidAnimation'
+import styles from '../styles/Home.module.css'
 
 export default function Home() {
   const { isConnected } = useAccount()
