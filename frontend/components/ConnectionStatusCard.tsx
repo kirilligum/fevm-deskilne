@@ -18,7 +18,9 @@ export function ConnectionStatusCard() {
   if (isConnected) {
     return (
       <div>
-        <Image src={ensAvatar ?? ''} alt="ENS Avatar" />
+        {ensAvatar &&
+          <Image src={ensAvatar ?? ''} alt="ENS Avatar" />
+        }
         <div>{ensName ? `${ensName} (${address})` : address}</div>
         <div>Connected to {connector!.name}</div>
         <button onClick={() => disconnect()}>Disconnect</button>

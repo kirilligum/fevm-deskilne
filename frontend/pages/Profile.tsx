@@ -1,9 +1,17 @@
+import { redirect } from 'next/dist/server/api-utils'
+import { useAccount, useConnect, useDisconnect } from 'wagmi'
 import { ConnectionStatusCard } from '../components/ConnectionStatusCard'
 import Layout from '../components/layout'
+import { MintNFTForm } from '../components/MintNFTForm'
+import { SignMessage } from '../components/SignMessage'
 import { MintNft } from '../components/WagmiMint'
 import styles from '../styles/Home.module.css'
 
 export default function Profile() {
+  const { isConnected } = useAccount();
+  const { connect, connectors, error, isLoading, pendingConnector } =
+    useConnect()
+  const { disconnect } = useDisconnect()
   return (
     <Layout>
       <main className={styles.main}>
@@ -26,7 +34,8 @@ export default function Profile() {
           </div>
           <div className={styles.card}>
             <ConnectionStatusCard />
-            <MintNft address='' />
+            <MintNFTForm adddress='' />
+            {isConnected && <SignMessage />}
           </div>
         </div>
       </main>
