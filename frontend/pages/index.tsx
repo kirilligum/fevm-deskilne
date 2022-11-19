@@ -15,7 +15,7 @@ export default function Home() {
           Welcome to Deskilne
         </h1>
 
-        <div className={styles.grid}>
+        <div className={`${styles.grid} border-4 border-indigo-400`}>
           <a href="https://github.com/kirilligum/fevm-deskilne" className={styles.card}>
             <h2>What is Deskilne? &rarr;</h2>
             <p>Decentralized professional networking tool</p>
