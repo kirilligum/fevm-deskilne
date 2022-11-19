@@ -14,6 +14,9 @@ export default function Navbar() {
     </Head>
     <nav>
       <p> some option</p>
+      <Link href={'/ConnectionTest'}>
+        check wallet connection
+      </Link>
     </nav>
   </div>
 }
