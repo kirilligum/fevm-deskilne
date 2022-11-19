@@ -1,5 +1,6 @@
 import { ConnectionStatusCard } from '../components/ConnectionStatusCard'
 import Layout from '../components/layout'
+import { MintNft } from '../components/WagmiMint'
 import styles from '../styles/Home.module.css'
 
 export default function Profile() {
@@ -25,6 +26,7 @@ export default function Profile() {
           </div>
           <div className={styles.card}>
             <ConnectionStatusCard />
+            <MintNft address='' />
           </div>
         </div>
       </main>
