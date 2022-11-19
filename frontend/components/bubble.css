@@ -1,0 +1,9 @@
+@keyframes wave {
+  from, to{
+    transform: translate(-50%, 0%);
+  }
+  
+  50%{
+    transform: translate(-50%, -20%);
+  }
+}
