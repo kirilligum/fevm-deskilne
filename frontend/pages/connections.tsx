@@ -40,8 +40,6 @@ export default function ConnectionsList() {
           </ul>
         </div>
       </main>
-
- 
     </div>
   )
 }
