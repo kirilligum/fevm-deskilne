@@ -33,6 +33,7 @@ Decentralized network for creators and builders with JSON resume on IPFS and sma
 
 ### you can manage friend requests and referrals 
 the ui is in progress but smartcontracts are there
+
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/connection.png" width="240">
 
 ## How it works
