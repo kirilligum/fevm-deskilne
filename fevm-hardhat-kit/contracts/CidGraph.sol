@@ -27,6 +27,7 @@ contract CidGraphToken {
 
 
     address public owner;
+    address tokenAddress = 0x6e1A19F235bE7ED8E3369eF73b196C07257494DE;
 
     constructor() {
         owner = msg.sender;
@@ -40,20 +41,36 @@ contract CidGraphToken {
       weight =  _g[a][b];
     }
 
-    function requestFriend(address receiver, uint amount) {
-      w = mint(amount);
-      _g[msg.sender][receiver]=w;
+    function requestFriend(address to, uint amount) {
+      require(
+          IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount),
+          "can't transfer"
+      );
+      _g[msg.sender][to]=amount;
     }
-    function approveFriend(address initiator){
-      w=_g[initiator][msg.sender];
-      require(balanceOf(msg.sender)>=w);
-      _g[msg.sender][initiator]=amount(w);
+
+    function approveFriend(address from){
+      amount =_g[from][msg.sender];
+      require(
+          IERC20(tokenAddress).transferFrom(msg.sender, address(this), amount ),
+          "can't transfer"
+      );
+      _g[msg.sender][from]=amount;
     }
+
     function unfriend(address a, address b){
+      abAmount =_g[a][b];
+      baAmount =_g[b][a];
       _g[a][b]=0;
       _g[b][a]=0;
-      burn(a,b);
-      burn(b,a);
+      require(
+          IERC20(tokenAddress).transferFrom(address(this), a, abAmount ),
+          "can't transfer"
+      );
+      require(
+          IERC20(tokenAddress).transferFrom(address(this), b, baAmount ),
+          "can't transfer"
+      );
     }
 
     function addCID(bytes calldata cidraw, uint size) public {
