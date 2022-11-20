@@ -38,8 +38,13 @@ the ui is in progress but smartcontracts are there
 
 ## How it works
 
+### creates profile by uploading resume to IPFS, and managing the CID of the resume in the marketplace of storage providers
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20115942%20create%20profile.png" width="240">
+
+### send payment with a friend request and accept friend requests by sending the same amount. the connection will be visible and the payments are staked and controlled by DAO
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20120055%20friend%20request.png" width="240">
+
+### to get an introduction, your friend, creates an introduction request that the person that asks for introduction has to pay into and the person that receives the introduction gets paid for.
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20120219%20introduce.png" width="240">
 
 # Developers
