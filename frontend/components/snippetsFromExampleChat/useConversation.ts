@@ -1,6 +1,7 @@
 import { Conversation, DecodedMessage, Stream } from '@xmtp/xmtp-js'
 import { truncate } from 'lodash'
 import { useState, useEffect } from 'react'
+import { useAppStore } from '../AppState'
 import { checkIfPathIsEns, shortAddress } from './string'
 import useWalletProvider from './useWalletProvider'
 
@@ -14,10 +15,10 @@ const useConversation = (
   onMessageCallback?: OnMessageCallback
 ) => {
   const { lookupAddress } = useWalletProvider()
-  // const walletAddress = useAppStore((state: { address: any }) => state.address)
-  // const client = useAppStore((state: { client: any }) => state.client)
-  // const convoMessages = useAppStore((state: { convoMessages: any }) => state.convoMessages)
-  // const setConvoMessages = useAppStore((state: { setConvoMessages: any }) => state.setConvoMessages)
+  const walletAddress = useAppStore((state: { address: any }) => state.address)
+  const client = useAppStore((state: { client: any }) => state.client)
+  const convoMessages = useAppStore((state: { convoMessages: any }) => state.convoMessages)
+  const setConvoMessages = useAppStore((state: { setConvoMessages: any }) => state.setConvoMessages)
   const [conversation, setConversation] = useState<Conversation | null>(null)
   const [loading] = useState<boolean>(false)
   const [browserVisible, setBrowserVisible] = useState<boolean>(true)

@@ -2,11 +2,9 @@ import { Button, Link, Spinner, Text, useToast } from '@chakra-ui/react'
 import { CheckBadgeIcon } from '@heroicons/react/24/solid'
 import { getAddress } from 'ethers/lib/utils'
 import { useCallback, useContext, useState } from 'react'
-import { useCheckOwnership } from '../hooks/useCheckOwnership'
-import { SendFlowState, useSendFlow } from '../hooks/useSendFlow'
-import { SetNotesForm, SetRecieverForm, SetTokenForm } from './form'
-import { ImageUpload } from './ImageUpload'
-import { VideoUpload } from './VideoUpload'
+import { SetTokenForm, SetRecieverForm, SetNotesForm } from './form'
+import { useCheckOwnership } from './useCheckOwnership'
+import { SendFlowState, useSendFlow } from './useSendFlow'
 import XmtpContext from './xmtp'
 
 
@@ -174,13 +172,6 @@ export const Sendform = ({ props }: any): any => {
             state={notes_state}
             onSet={setNotesState}
           ></SetNotesForm>
-        </div>
-        <div className="m-2">
-          <ImageUpload onSet={setImageState}></ImageUpload>
-        </div>
-
-        <div className="m-2">
-          <VideoUpload onSet={setImageState}></VideoUpload>
         </div>
         <div className="w-full p-4 flex items-center justify-center">
           <div><CheckBadgeIcon></CheckBadgeIcon></div>

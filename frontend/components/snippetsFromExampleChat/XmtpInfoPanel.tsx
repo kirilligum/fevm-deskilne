@@ -1,4 +1,5 @@
 import { ChevronRightIcon, LinkIcon, BookOpenIcon, UserGroupIcon } from "@heroicons/react/24/solid"
+import { useAppStore } from "../AppState"
 import classNames from "./classNames"
 
 type XmtpInfoRowProps = {
@@ -42,9 +43,18 @@ const InfoRow = ({
   </a>
 )
 
+type InfoRow = {
+  icon: JSX.Element;
+  headingText: string;
+  subHeadingText: string;
+  onClick: any;
+  disabled?: boolean;
+}
+
+
 export default function XmtpInfoPanel({ onConnect }: XmtpInfoPanelProps): JSX.Element {
-  // const walletAddress = useAppStore((state: { address: string }) => state.address)
-  const InfoRows = [
+  const walletAddress = useAppStore((state: { address: any }) => state.address)
+  const InfoRows: InfoRow[] = [
     {
       icon: <LinkIcon />,
       headingText: 'Connect your wallet',

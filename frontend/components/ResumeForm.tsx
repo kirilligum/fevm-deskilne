@@ -1,4 +1,6 @@
 import { Basics, ComplexResume, UserLocation } from "../types/ComplexResume";
+import { MiniResume } from "../types/MiniResume";
+import { SimpleResume } from "../types/SimpleResume";
 
 export function ResumeForm(): JSX.Element {
 
@@ -20,7 +22,7 @@ export function ResumeForm(): JSX.Element {
     location: location,
     profiles: []
   };
-  const data: ComplexResume = {
+  const complexResume: ComplexResume = {
     basics: basic,
     work: [],
     volunteer: [],
@@ -35,6 +37,11 @@ export function ResumeForm(): JSX.Element {
     projects: []
   };
 
+  const resume:  MiniResume= {
+    name: "",
+    languages: "",
+    yearsOfExperience: 0
+  }
 
   return <form
     onSubmit={e => {

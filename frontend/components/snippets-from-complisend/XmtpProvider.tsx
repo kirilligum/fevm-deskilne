@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react'
 import { Client, Conversation, Message } from '@xmtp/xmtp-js'
-import { XmtpContext, XmtpContextType } from '../context/xmtp'
 import { useAccount, useSigner } from 'wagmi'
+import XmtpContext, { XmtpContextType } from './xmtp'
 
 // Fix fetching the address everywhere smh
 
