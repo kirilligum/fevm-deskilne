@@ -1,5 +1,5 @@
 // SPDX-Licensee-Identifier: MIT
-pragma solidity ^0.8.17;
+pragma solidity 0.8.15;
 
 interface IFriendsGraph {
     function myConnectionStrength(address child)
