@@ -12,12 +12,12 @@ export default function Home() {
     <Layout>
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to Deskilne
+          Welcome to Sw/.tch
         </h1>
 
         <div className={`${styles.grid} border-4 border-indigo-400`}>
           <a href="https://github.com/kirilligum/fevm-deskilne" className={styles.card}>
-            <h2>What is Deskilne? &rarr;</h2>
+            <h2>What is Sw/.tch? &rarr;</h2>
             <p>Decentralized professional networking tool</p>
             <p>You own your data</p>
           </a>

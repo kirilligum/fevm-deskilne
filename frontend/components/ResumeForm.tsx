@@ -91,7 +91,7 @@ export function ResumeForm(props: { callback: (v: Resume) => void }): JSX.Elemen
         onChange={(e) => setYearsOfExperience(typeof (e?.valueOf) === 'number' ? e?.valueOf : 0)}
       />
       <button id="resumeSubmit" type={'submit'} disabled={name === ''} >
-        Click here to begin Deskilne Journey!
+        Click here to begin Sw/.tch Journey!
       </button>
     </form>
   );

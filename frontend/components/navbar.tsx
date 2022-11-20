@@ -5,7 +5,7 @@ import styles from '../styles/Home.module.css'
 export default function Navbar() {
   return <div className={`${styles.container} bg-white border-gray-200 rounded dark:bg-gray-900 h-100`} >
     <Head>
-      <title>Deskilne</title>
+      <title>Sw/.tch</title>
       <meta name="description" content="Decentralized networking" />
       <link rel="icon" href="/favicon.ico" />
     </Head>
