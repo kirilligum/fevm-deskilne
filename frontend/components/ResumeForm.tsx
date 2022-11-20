@@ -23,10 +23,10 @@ export function ResumeForm(props: { callback: (v: Resume) => void }): JSX.Elemen
   const [name, setName] = useState("");
   const [yearsOfExperience, setYearsOfExperience] = useState(0);
   const [tags, setTags] = useState([
-    { id: "Thailand", text: "Thailand" },
-    { id: "India", text: "India" },
-    { id: "Vietnam", text: "Vietnam" },
-    { id: "Turkey", text: "Turkey" },
+    { id: "JS", text: "Javascript" },
+    { id: "Solidity", text: "Solidity" },
+    { id: "FVM", text: "FVM" },
+    { id: "Python", text: "Python" },
   ]);
 
   const handleDelete = (i: number) => {
@@ -51,6 +51,7 @@ export function ResumeForm(props: { callback: (v: Resume) => void }): JSX.Elemen
 
   return (
     <form
+      style={{ height: '80vh' }}
       onSubmit={(e) => {
         e.preventDefault();
         const resume: MiniResume = {
@@ -61,11 +62,12 @@ export function ResumeForm(props: { callback: (v: Resume) => void }): JSX.Elemen
         props.callback(resume);
       }}
     >
-      <label htmlFor="message">Enter a message to sign</label>
+      <label htmlFor="message">Username:</label>
       <textarea
-        id="message"
-        name="message"
-        placeholder="the quick brown fox..."
+        style={{ height: '25px', color: 'black' }}
+        id="name"
+        name="name"
+        placeholder="Your name here"
         onChange={(e) => setName(e.target.value)}
       />
       <ReactTags
@@ -78,16 +80,17 @@ export function ResumeForm(props: { callback: (v: Resume) => void }): JSX.Elemen
         handleTagClick={handleTagClick}
         inputFieldPosition="bottom"
         autocomplete
+
       />
       <NumericInput
         min={0}
         max={10}
         value={1}
-        onChange={(e) => setYearsOfExperience(e?.valueOf || 0)}
+        onChange={(e) => setYearsOfExperience(typeof (e?.valueOf) === 'number' ? e?.valueOf : 0)}
       />
-      <input type={'submit'}>
-        Ready to begin Deskilne Journey!
-      </input>
+      <button id="resumeSubmit" type={'submit'} disabled={name === ''} >
+        Click here to begin Deskilne Journey!
+      </button>
     </form>
   );
 }

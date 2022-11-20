@@ -36,7 +36,7 @@ export default async function getAddress(network:any) {
 
     const pubKey = hexToBytes(deployer.publicKey.slice(2));
 
-    const priorityFee = await callRpc("eth_maxPriorityFeePerGas");
+    // const priorityFee = await callRpc("eth_maxPriorityFeePerGas");
 
     const f4Address = fa.delegatedFromEthAddress(deployer.address).toString();
     const nonce = await callRpc("Filecoin.MpoolGetNonce", [f4Address]);
