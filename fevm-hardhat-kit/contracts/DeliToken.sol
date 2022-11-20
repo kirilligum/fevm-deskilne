@@ -35,7 +35,7 @@ contract DealClient is ERC20, Pausable, Ownable, ERC20Permit, ERC20Votes {
     address public owner;
     address tokenAddress = 0x6e1A19F235bE7ED8E3369eF73b196C07257494DE;
 
-    constructor() ERC20("DeliToken", "DELI") ERC20Permit("DeliToken") {
+    constructor() ERC20("Switch", "swit") ERC20Permit("SwitchToken") {
         owner = msg.sender;
         // _mint(msg.sender, 10000000 * 10**decimals());
     }
@@ -77,7 +77,15 @@ contract DealClient is ERC20, Pausable, Ownable, ERC20Permit, ERC20Votes {
     function _burn(address account, uint256 amount) internal override(ERC20, ERC20Votes) {
         super._burn(account, amount);
     }
-}
+
+    function _transfer(
+        address from,
+        address to,
+        uint256 amount
+    ) internal virtual {
+      revert("power of the connection cannot be transfered");
+    }
+
 
     function erc20TokenID(address tokenAddress) public view returns (uint256) {
       return uint256(uint160(tokenAddress));
