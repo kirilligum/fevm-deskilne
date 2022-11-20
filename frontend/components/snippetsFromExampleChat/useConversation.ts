@@ -1,7 +1,7 @@
 import { Conversation, DecodedMessage, Stream } from '@xmtp/xmtp-js'
+import { truncate } from 'lodash'
 import { useState, useEffect } from 'react'
-import { checkIfPathIsEns, shortAddress, truncate } from '../helpers'
-import { useAppStore } from '../store/app'
+import { checkIfPathIsEns, shortAddress } from './string'
 import useWalletProvider from './useWalletProvider'
 
 type OnMessageCallback = () => void
@@ -14,10 +14,10 @@ const useConversation = (
   onMessageCallback?: OnMessageCallback
 ) => {
   const { lookupAddress } = useWalletProvider()
-  const walletAddress = useAppStore((state) => state.address)
-  const client = useAppStore((state) => state.client)
-  const convoMessages = useAppStore((state) => state.convoMessages)
-  const setConvoMessages = useAppStore((state) => state.setConvoMessages)
+  // const walletAddress = useAppStore((state: { address: any }) => state.address)
+  // const client = useAppStore((state: { client: any }) => state.client)
+  // const convoMessages = useAppStore((state: { convoMessages: any }) => state.convoMessages)
+  // const setConvoMessages = useAppStore((state: { setConvoMessages: any }) => state.setConvoMessages)
   const [conversation, setConversation] = useState<Conversation | null>(null)
   const [loading] = useState<boolean>(false)
   const [browserVisible, setBrowserVisible] = useState<boolean>(true)
@@ -47,7 +47,7 @@ const useConversation = (
           newMessages.push(msg)
           const uniqueMessages = [
             ...Array.from(
-              new Map(newMessages.map((item) => [item['id'], item])).values()
+              new Map(newMessages.map((item: { [x: string]: any }) => [item['id'], item])).values()
             ),
           ]
           convoMessages.set(conversation.peerAddress, uniqueMessages)
@@ -63,7 +63,7 @@ const useConversation = (
           new Notification('XMTP', {
             body: `${name || shortAddress(msg.senderAddress ?? '')}\n${truncate(
               msg.content,
-              75
+              { length: 75 }
             )}`,
           })
 

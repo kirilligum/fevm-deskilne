@@ -1,9 +1,8 @@
 import { DecodedMessage } from '@xmtp/xmtp-js'
 import React, { MutableRefObject } from 'react'
 import Emoji from 'react-emoji-render'
-import Avatar from '../Avatar'
-import { formatTime } from '../../helpers'
-import AddressPill from '../AddressPill'
+import AddressPill from './AddressPill'
+import { formatTime } from './string'
 
 export type MessageListProps = {
   messages: DecodedMessage[]
@@ -23,10 +22,9 @@ const formatDate = (d?: Date) =>
 
 const MessageTile = ({ message }: MessageTileProps): JSX.Element => (
   <div className="flex items-start mx-auto mb-4">
-    <Avatar peerAddress={message.senderAddress as string} />
     <div className="ml-2 max-w-[95%]">
       <div>
-        <AddressPill address={message.senderAddress as string} />
+        <AddressPill address={message.senderAddress as string} userAddress={''} />
         <span className="text-sm font-normal place-self-end text-n-300 text-md uppercase">
           {formatTime(message.sent)}
         </span>
@@ -42,21 +40,13 @@ const MessageTile = ({ message }: MessageTileProps): JSX.Element => (
   </div>
 )
 
-const DateDividerBorder: React.FC = ({ children }) => (
-  <>
-    <div className="grow h-0.5 bg-gray-300/25" />
-    {children}
-    <div className="grow h-0.5 bg-gray-300/25" />
-  </>
-)
-
-const DateDivider = ({ date }: { date?: Date }): JSX.Element => (
+const DateDivider = (props: { date: Date }): JSX.Element => (
   <div className="flex align-items-center items-center pb-8 pt-4">
-    <DateDividerBorder>
-      <span className="mx-11 flex-none text-gray-300 text-sm font-bold">
-        {formatDate(date)}
-      </span>
-    </DateDividerBorder>
+    <div className="grow h-0.5 bg-gray-300/25" />
+    <span className="mx-11 flex-none text-gray-300 text-sm font-bold">
+      {formatDate(props.date)}
+    </span>
+    <div className="grow h-0.5 bg-gray-300/25" />
   </div>
 )
 

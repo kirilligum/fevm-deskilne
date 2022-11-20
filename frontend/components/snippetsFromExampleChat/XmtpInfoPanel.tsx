@@ -1,13 +1,5 @@
-import packageJson from '../package.json'
-import { classNames } from '../helpers'
-import {
-  LinkIcon,
-  BookOpenIcon,
-  UserGroupIcon,
-  ChevronRightIcon,
-  ArrowSmRightIcon,
-} from '@heroicons/react/solid'
-import { useAppStore } from '../store/app'
+import { ChevronRightIcon, LinkIcon, BookOpenIcon, UserGroupIcon } from "@heroicons/react/24/solid"
+import classNames from "./classNames"
 
 type XmtpInfoRowProps = {
   icon: JSX.Element
@@ -50,8 +42,8 @@ const InfoRow = ({
   </a>
 )
 
-const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
-  const walletAddress = useAppStore((state) => state.address)
+export default function XmtpInfoPanel({ onConnect }: XmtpInfoPanelProps): JSX.Element {
+  // const walletAddress = useAppStore((state: { address: string }) => state.address)
   const InfoRows = [
     {
       icon: <LinkIcon />,
@@ -102,20 +94,14 @@ const XmtpInfoPanel = ({ onConnect }: XmtpInfoPanelProps): JSX.Element => {
         })}
       </div>
       <div className="flex justify-between items-center mt-4">
-        <div className="text-n-600 text-sm">
-          xmtp-js v{packageJson.dependencies['@xmtp/xmtp-js'].substring(1)}
-        </div>
         <a
           href="https://blog.xmtp.com/contact/"
           target="_blank"
           className="text-l-300 font-semibold text-md flex items-center"
           rel="noreferrer"
-        >
-          I need help <ArrowSmRightIcon className="h-5 fill-l-300" />
-        </a>
+        > I need help         </a>
       </div>
     </div>
   )
 }
 
-export default XmtpInfoPanel

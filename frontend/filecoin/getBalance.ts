@@ -4,6 +4,8 @@ export async function getBalance(contractAddr: string, account: string, networkI
   console.log("Reading SimpleCoin owned by", account, " on network ", networkId)
   const SimpleCoin = await ethers.getContractFactory("SimpleCoin")
   // todo this is call on a hardhat helper to the ethers library
+  const provider = new ethers.providers.Web3Provider(window.ethereum)
+
 
   const accounts = await ethers.getSigners()
   const signer = accounts[0]

@@ -1,14 +1,13 @@
 import { Button, Link, Spinner, Text, useToast } from '@chakra-ui/react'
+import { CheckBadgeIcon } from '@heroicons/react/24/solid'
 import { getAddress } from 'ethers/lib/utils'
 import { useCallback, useContext, useState } from 'react'
-import XmtpContext from '../context/xmtp'
 import { useCheckOwnership } from '../hooks/useCheckOwnership'
 import { SendFlowState, useSendFlow } from '../hooks/useSendFlow'
 import { SetNotesForm, SetRecieverForm, SetTokenForm } from './form'
 import { ImageUpload } from './ImageUpload'
 import { VideoUpload } from './VideoUpload'
-import { Identity } from '@semaphore-protocol/identity'
-import { CheckBadgeIcon } from '@heroicons/react/24/solid'
+import XmtpContext from './xmtp'
 
 
 const ButtonTextMap = new Map([
@@ -145,7 +144,6 @@ export const Sendform = ({ props }: any): any => {
     if (!client) {
       await initClient()
     }
-    
 
     let res = await Promise.all([
       
@@ -184,8 +182,6 @@ export const Sendform = ({ props }: any): any => {
         <div className="m-2">
           <VideoUpload onSet={setImageState}></VideoUpload>
         </div>
-
-
         <div className="w-full p-4 flex items-center justify-center">
           <div><CheckBadgeIcon></CheckBadgeIcon></div>
           {/* <div>{`recipient owns NFT: ${ownsNFT}`}</div> */}
