@@ -22,7 +22,7 @@ export function ConnectionStatusCard() {
           <Image src={ensAvatar ?? ''} alt="ENS Avatar" />
         }
         <div>{ensName ? `${ensName} (${address})` : address}</div>
-        <div>Connected to {connector!.name}</div>
+        <div>Connected to: {connector ? connector.name : 'unknown'}</div>
         <button onClick={() => disconnect()}>Disconnect</button>
       </div>
     );

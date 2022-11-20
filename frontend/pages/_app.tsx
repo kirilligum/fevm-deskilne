@@ -15,7 +15,7 @@ if (!process.env.NEXT_PUBLIC_PROJECT_ID) {
 }
 const projectId: string = process.env.NEXT_PUBLIC_PROJECT_ID;
 
-const chains: Chain[] = [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum];
+const chains: Chain[] = [chain.mainnet, chain.polygon, chain.optimism, chain.arbitrum, chain.];
 
 // Wagmi client
 const { provider } = configureChains(chains, [
