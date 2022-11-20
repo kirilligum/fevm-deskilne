@@ -8,7 +8,7 @@ Decentralized network for creators and builders with JSON resume on IPFS and sma
 
 ## Team
 
-<img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20130338%20team%20cover.png" width="240">
+<img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20130338%20team%20cover.png" width="480">
 
 - Artem -- Solidity, front-end
 - Stanislaw -- Front-end
@@ -25,19 +25,21 @@ Decentralized network for creators and builders with JSON resume on IPFS and sma
 
 ## UI Flow
 
-<span>
+### a user logs in with a wallet
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/switch%20welcome.png" width="240">
+
+### the user creates a profile by uploading or creating their resume
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/profile.png" width="240">
+
+### you can manage friend requests and referrals 
+the ui is in progress but smartcontracts are there
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/connection.png" width="240">
-</span>
 
 ## How it works
 
-<span>
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20115942%20create%20profile.png" width="240">
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20120055%20friend%20request.png" width="240">
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20120219%20introduce.png" width="240">
-</span>
 
 # Developers
 start by cloning the repository
