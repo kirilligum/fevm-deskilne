@@ -5,6 +5,7 @@ import NumericInput from "react-numeric-input";
 import { SimpleResume } from "../types/SimpleResume";
 import { ComplexResume } from "../types/ComplexResume";
 
+
 const techTags: Tag[] = [
   { id: "Javascript", text: "Javascript" },
   { id: "Javascript", text: "Javascript" },
@@ -16,7 +17,7 @@ const KeyCodes = {
 };
 
 const delimiters = [KeyCodes.comma, KeyCodes.enter];
-type Resume = SimpleResume | MiniResume | ComplexResume
+export type Resume = SimpleResume | MiniResume | ComplexResume
 
 export function ResumeForm(props: { callback: (v: Resume) => void }): JSX.Element {
   const [name, setName] = useState("");

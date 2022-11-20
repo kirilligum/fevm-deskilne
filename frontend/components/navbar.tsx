@@ -14,6 +14,7 @@ export default function Navbar() {
     </Head>
     <nav className='container flex flex-wrap items-center justify-between mx-auto'>
       <Link className='self-center text-xl font-semibold whitespace-nowrap dark:text-white' href={'/'}>Home</Link>
+      <Link className='self-center text-xl font-semibold whitespace-nowrap dark:text-white' href={'/MyResume'}>My Resume</Link>
       <Link className='self-center text-xl font-semibold whitespace-nowrap dark:text-white' href={'/Profile'}> Profile </Link>
       <Link className='self-center text-xl font-semibold whitespace-nowrap dark:text-white' href={'/Connections'}> Connections</Link>
     </nav>
