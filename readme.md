@@ -1,8 +1,18 @@
 
 
+
+<img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/DALL%C2%B7E%202022-11-20%2011.53.18%20-%20stainglass%20DEcentralized%20social%20network%20of%20computer%20programmers%20for%20HACKathons%20.png" width="240">
 # Switch
 
 Decentralized network for creators and builders with JSON resume on IPFS and smart contract for referral tokenomics
+
+## Team
+
+<img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20130338%20team%20cover.png" width="240">
+
+- Artem -- Solidity, front-end
+- Stanislaw -- Front-end
+- Kirill -- Product, solidity
 
 ## Description
 
@@ -19,10 +29,15 @@ Decentralized network for creators and builders with JSON resume on IPFS and sma
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/switch%20welcome.png" width="240">
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/profile.png" width="240">
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/connection.png" width="240">
-
 </span>
 
 ## How it works
+
+<span>
+<img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20115942%20create%20profile.png" width="240">
+<img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20120055%20friend%20request.png" width="240">
+<img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20120219%20introduce.png" width="240">
+</span>
 
 # Developers
 start by cloning the repository
