@@ -13,6 +13,9 @@ Decentralized network for creators and builders with JSON resume on IPFS and sma
 - stakes in connections have voting rights in a **DAO ** that decide on fees, investment strategy, and rewards
 - FEVM **marketplace **controls the hosting of the profile data on IPFS
 
+## UI Flow
+
+## How it works
 
 # Developers
 start by cloning the repository
