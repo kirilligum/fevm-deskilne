@@ -15,6 +15,11 @@ Decentralized network for creators and builders with JSON resume on IPFS and sma
 
 ## UI Flow
 
+<span>
+<img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/switch%20welcome.png" width="240">
+
+</span>
+
 ## How it works
 
 # Developers
