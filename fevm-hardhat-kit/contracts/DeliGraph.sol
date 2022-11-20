@@ -1,5 +1,5 @@
 // SPDX-License-Identifier: UNLICENSED
-pragma solidity ^0.8.17;
+pragma solidity 0.8.15;
 
 import {SwitchToken} from "./SwitchToken.sol";
 import {IFriendsGraph} from "./interfaces/IFriendsGraph.sol";
@@ -87,6 +87,7 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
         }
         // Create profile
         profiles[msg.sender] = profileCid;
+        addCidToMarket(profileCid);
 
         emit ProfileCreated(msg.sender, referrer, profileCid);
     }
@@ -201,14 +202,15 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
         }
 
         // Calculate initator payment costs
-        uint256 listenCost = listenerCosts[to];
-        uint256 referrerAbsoluteFee = (listenCost * referrerPercentage) / 10000; // 10000 = 100 %
+        uint256 resourceListenCost = listenerCosts[to];
+        uint256 referrerAbsoluteFee = (resourceListenCost *
+            referrerPercentage) / 10000; // 10000 = 100 %
 
         // save intro data including amount for intro
         introductions[initiator] = Intro(
             msg.sender,
             to,
-            listenCost + referrerAbsoluteFee,
+            resourceListenCost + referrerAbsoluteFee,
             0,
             false,
             false
