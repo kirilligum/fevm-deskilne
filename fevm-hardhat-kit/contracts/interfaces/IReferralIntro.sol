@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 interface IReferralIntro {
-    function createProfile(bytes calldata cid, address referrer)
+    function createProfile(bytes calldata profileCid, address referrer)
         external
         payable;
 

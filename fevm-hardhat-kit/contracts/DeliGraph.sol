@@ -28,6 +28,7 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
     mapping(address => Intro) introductions;
     // someone has to create a profile without referrals
     bool firstProfileCreated;
+    bool referralsEnabled;
 
     event FreindRequested(
         address indexed from,
@@ -52,11 +53,11 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
     //     return uint256(uint160(tokenAddress));
     // }
 
-    function createProfile(bytes calldata cid, address referrer)
+    function createProfile(bytes calldata profileCid, address referrer)
         external
         payable
     {
-        if (firstProfileCreated) {
+        if (firstProfileCreated && referralsEnabled) {
             // Someone must have staked behind your connection first
             uint256 referrerStake = graph[referrer][msg.sender];
             if (msg.value < referrerStake) revert ConnectionStakeIsTooSmall();
@@ -67,9 +68,9 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
             firstProfileCreated = true;
         }
         // Create profile
-        profiles[msg.sender] = cid;
+        profiles[msg.sender] = profileCid;
 
-        emit ProfileCreated(msg.sender, referrer, cid);
+        emit ProfileCreated(msg.sender, referrer, profileCid);
     }
 
     // IFriendsGraph
