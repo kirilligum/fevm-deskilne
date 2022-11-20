@@ -47,5 +47,9 @@ the ui is in progress but smartcontracts are there
 ### to get an introduction, your friend, creates an introduction request that the person that asks for introduction has to pay into and the person that receives the introduction gets paid for.
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/Screenshot%202022-11-20%20120219%20introduce.png" width="240">
 
+### details
+
+we used FEVM client deal market manager, erc20vote, IPFS
+
 # Developers
 start by cloning the repository
