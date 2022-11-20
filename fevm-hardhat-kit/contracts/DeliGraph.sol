@@ -26,6 +26,8 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
     mapping(address => uint256) listenerCosts;
     // referred introduction for a fee and slashing mechanics
     mapping(address => Intro) introductions;
+    // someone has to create a profile without referrals
+    bool firstProfileCreated;
 
     event FreindRequested(
         address indexed from,
@@ -49,6 +51,26 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
     // function erc20TokenID(address tokenAddress) public view returns (uint256) {
     //     return uint256(uint160(tokenAddress));
     // }
+
+    function createProfile(bytes calldata cid, address referrer)
+        external
+        payable
+    {
+        if (firstProfileCreated) {
+            // Someone must have staked behind your connection first
+            uint256 referrerStake = graph[referrer][msg.sender];
+            if (msg.value < referrerStake) revert ConnectionStakeIsTooSmall();
+
+            // Create the same stake for the bi-directional connection
+            graph[msg.sender][referrer] = referrerStake;
+        } else {
+            firstProfileCreated = true;
+        }
+        // Create profile
+        profiles[msg.sender] = cid;
+
+        emit ProfileCreated(msg.sender, referrer, cid);
+    }
 
     // IFriendsGraph
 
@@ -136,22 +158,6 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
     }
 
     // IReferralIntro
-    function createProfile(bytes calldata cid, address referrer)
-        external
-        payable
-    {
-        // Someone must have staked behind your connection first
-        uint256 referrerStake = graph[referrer][msg.sender];
-        if (msg.value < referrerStake) revert ConnectionStakeIsTooSmall();
-
-        // Create the same stake for the bi-directional connection
-        graph[msg.sender][referrer] = referrerStake;
-        // Create profile
-        profiles[msg.sender] = cid;
-
-        emit ProfileCreated(msg.sender, referrer, cid);
-    }
-
     function listenCost(address listener) external view returns (uint256) {
         return listenerCosts[listener];
     }
