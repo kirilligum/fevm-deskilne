@@ -33,7 +33,5 @@ export function SignMessage() {
     </div>
     }
     {error && <div>{error.message}</div>}
-
-
   </form>
 }

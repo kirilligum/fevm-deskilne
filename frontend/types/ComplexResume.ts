@@ -1,5 +1,5 @@
 
-export interface Location {
+export interface UserLocation {
   address: string;
   postalCode: string;
   city: string;
@@ -21,7 +21,7 @@ export interface Basics {
   phone: string;
   url: string;
   summary: string;
-  location: Location;
+  location: UserLocation;
   profiles: Profile[];
 }
 

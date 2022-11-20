@@ -9,7 +9,7 @@ export default function PossibleConnections() {
         <h1 className={styles.title}>
           Welcome to Deskilne
         </h1>
-        <p> here data grind with PossibleConnections</p>
+        <p> here data grid with PossibleConnections</p>
       </main>
     </div>
   )
