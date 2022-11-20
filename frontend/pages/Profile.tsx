@@ -7,6 +7,10 @@ import { SignMessage } from '../components/SignMessage'
 import { MintNft } from '../components/WagmiMint'
 import styles from '../styles/Home.module.css'
 
+
+const remoteContractUrl: string = 'https://explorer.glif.io/tx/0x94c2663f8bc3e2ebaba3975ad091aefb2cae0ed51364997143aba771aed8621f/?network=wallabynet';
+// https://github.com/NftTopBest/example-chat-react-gitcoin-hackathon 
+
 export default function Profile() {
   const { isConnected } = useAccount();
   const { connect, connectors, error, isLoading, pendingConnector } =
