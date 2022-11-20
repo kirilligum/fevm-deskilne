@@ -18,5 +18,5 @@ interface IFriendsGraph {
     // stake amount on the connection with from based on previous friend request
     function approveFriend(address from) external payable;
 
-    function unfriend(address a, address b) external;
+    function unfriend(address from) external;
 }

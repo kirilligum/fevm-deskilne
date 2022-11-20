@@ -2,7 +2,7 @@
 pragma solidity ^0.8.17;
 
 import "@openzeppelin/contracts/token/ERC20/ERC20.sol";
-import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
+//import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Burnable.sol";
 import "@openzeppelin/contracts/security/Pausable.sol";
 import "@openzeppelin/contracts/access/Ownable.sol";
 import "@openzeppelin/contracts/token/ERC20/extensions/draft-ERC20Permit.sol";
@@ -30,7 +30,7 @@ import "@openzeppelin/contracts/token/ERC20/extensions/ERC20Votes.sol";
 
 contract SwitchToken is
     ERC20,
-    ERC20Burnable,
+    // ERC20Burnable,
     Pausable,
     Ownable,
     ERC20Permit,
@@ -97,13 +97,13 @@ contract SwitchToken is
         super._burn(account, amount);
     }
 
-    function _transfer(
-        address from,
-        address to,
-        uint256 amount
-    ) internal virtual {
-        revert("power of the connection cannot be transfered");
-    }
+    // function _transfer(
+    //     address from,
+    //     address to,
+    //     uint256 amount
+    // ) internal virtual {
+    //     revert("power of the connection cannot be transfered");
+    // }
 
     function addCID(bytes calldata cidraw, uint256 size) public {
         require(msg.sender == owner());

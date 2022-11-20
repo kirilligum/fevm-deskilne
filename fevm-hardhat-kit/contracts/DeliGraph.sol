@@ -2,9 +2,12 @@
 pragma solidity ^0.8.17;
 
 import {SwitchToken} from "./DeliToken.sol";
+import {IFriendsGraph} from "./interfaces/IFriendsGraph.sol";
+import {IReferralIntro} from "./interfaces/IReferralIntro.sol";
 
-contract DeliGraph is SwitchToken {
+contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
     error ConnectionStakeIsTooSmall();
+    error UnfriendWithdrwalFailed();
 
     struct Intro {
         address referrer;
@@ -34,27 +37,39 @@ contract DeliGraph is SwitchToken {
         address indexed to,
         uint256 amount
     );
+    event Unfriended(address indexed from, address indexed to, uint256 amount);
+    event ProfileCreated(
+        address indexed creator,
+        address indexed referrer,
+        bytes indexed profileCid
+    );
 
     constructor() SwitchToken() {}
 
-    function erc20TokenID(address tokenAddress) public view returns (uint256) {
-        return uint256(uint160(tokenAddress));
-    }
+    // function erc20TokenID(address tokenAddress) public view returns (uint256) {
+    //     return uint256(uint160(tokenAddress));
+    // }
 
-    function strength(address child) external view returns (uint256 weight) {
-        weight = strength(msg.sender, child);
-    }
+    // IFriendsGraph
 
-    function strength(address a, address b)
+    function myConnectionStrength(address child)
         external
         view
-        returns (uint256 weight)
+        returns (uint256)
     {
-        weight = graph[a][b];
+        return graph[msg.sender][child];
+    }
+
+    function connectionStrength(address a, address b)
+        external
+        view
+        returns (uint256)
+    {
+        return graph[a][b];
     }
 
     // stake amount on the connection with to
-    function requestFriend(address to, uint256 amount) external {
+    function requestFriend(address to, uint256 amount) external payable {
         // require(
         //     IERC20(tokenAddress).transferFrom(
         //         msg.sender,
@@ -64,15 +79,15 @@ contract DeliGraph is SwitchToken {
         //     "can't transfer"
         // );
 
-        if (msg.value != amount) revert ConnectionStakeIsTooSmall();
+        if (msg.value < amount) revert ConnectionStakeIsTooSmall();
         // Store staked native token (FIL) on connection from sender to a friend
         graph[msg.sender][to] = amount;
 
-        emit FreindRequested(msg.sedner, to, amount);
+        emit FreindRequested(msg.sender, to, amount);
     }
 
     // stake amount on the connection with from (2-sided connection now)
-    function approveFriend(address from) external {
+    function approveFriend(address from) external payable {
         // require(
         //     IERC20(tokenAddress).transferFrom(
         //         msg.sender,
@@ -83,8 +98,8 @@ contract DeliGraph is SwitchToken {
         // );
 
         // TODO: check if friend request happened
-        amount = graph[from][msg.sender];
-        if (msg.value != amount) revert ConnectionStakeIsTooSmall();
+        uint256 amount = graph[from][msg.sender];
+        if (msg.value < amount) revert ConnectionStakeIsTooSmall();
 
         graph[msg.sender][from] = amount;
 
@@ -94,34 +109,50 @@ contract DeliGraph is SwitchToken {
         emit FriendApproved(from, msg.sender, amount);
     }
 
-    function unfriend(address a, address b) external {
-        abAmount = graph[a][b];
-        baAmount = graph[b][a];
+    function unfriend(address from) external {
+        uint256 abAmount = graph[msg.sender][from];
+        uint256 baAmount = graph[from][msg.sender];
 
-        assert(abAmount == baAmount, "Something is wrong, stake must be equal");
+        assert(abAmount == baAmount);
 
-        graph[a][b] = 0;
-        graph[b][a] = 0;
-        _burn(msg.sender, erc20TokenID(tokenAddress), amount);
-        _burn(from, erc20TokenID(tokenAddress), amount);
-        require(
-            IERC20(tokenAddress).transferFrom(address(this), a, abAmount),
-            "can't transfer"
-        );
-        require(
-            IERC20(tokenAddress).transferFrom(address(this), b, baAmount),
-            "can't transfer"
-        );
+        graph[msg.sender][from] = 0;
+        graph[from][msg.sender] = 0;
+        _burn(msg.sender, abAmount);
+        _burn(from, baAmount);
+        // require(
+        //     IERC20(tokenAddress).transferFrom(address(this), a, abAmount),
+        //     "can't transfer"
+        // );
+        // require(
+        //     IERC20(tokenAddress).transferFrom(address(this), b, baAmount),
+        //     "can't transfer"
+        // );
+        (bool res, ) = msg.sender.call{value: abAmount}("");
+        if (!res) revert UnfriendWithdrwalFailed();
+        (res, ) = from.call{value: baAmount}("");
+        if (!res) revert UnfriendWithdrwalFailed();
+
+        emit Unfriended(msg.sender, from, abAmount);
     }
 
     // IReferralIntro
-    function createProfile(bytes cid, address referrer) external {
-        profiles[msg.sender] = cid;
+    function createProfile(bytes calldata cid, address referrer)
+        external
+        payable
+    {
+        // Someone must have staked behind your connection first
         uint256 referrerStake = graph[referrer][msg.sender];
+        if (msg.value < referrerStake) revert ConnectionStakeIsTooSmall();
+
+        // Create the same stake for the bi-directional connection
         graph[msg.sender][referrer] = referrerStake;
+        // Create profile
+        profiles[msg.sender] = cid;
+
+        emit ProfileCreated(msg.sender, referrer, cid);
     }
 
-    function listenCost(address listener) external view {
+    function listenCost(address listener) external view returns (uint256) {
         return listenerCosts[listener];
     }
 
@@ -139,7 +170,9 @@ contract DeliGraph is SwitchToken {
             msg.sender,
             to,
             amountToPayForIntro,
-            0
+            0,
+            false,
+            false
         );
     }
 
