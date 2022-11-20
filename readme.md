@@ -17,6 +17,8 @@ Decentralized network for creators and builders with JSON resume on IPFS and sma
 
 <span>
 <img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/switch%20welcome.png" width="240">
+<img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/profile.png" width="240">
+<img src="https://github.com/kirilligum/fevm-deskilne/blob/main/images/connection.png" width="240">
 
 </span>
 
