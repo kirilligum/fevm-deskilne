@@ -4,18 +4,14 @@ import Web3Modal, { IProviderOptions, providers } from 'web3modal'
 import WalletConnectProvider from '@walletconnect/web3-provider'
 import WalletLink from 'walletlink'
 import { useRouter } from 'next/router'
-import { useAppStore } from '../store/app'
+import { useAppStore } from '../AppState'
 
-// Ethereum mainnet
-const ETH_CHAIN_ID = 1
+const ETH_CHAIN_ID = 1 // for mainnet
 
 const cachedLookupAddress = new Map<string, string | undefined>()
 const cachedResolveName = new Map<string, string | undefined>()
 const cachedGetAvatarUrl = new Map<string, string | undefined>()
 
-// This variables are not added in state on purpose.
-// It saves few re-renders which then trigger the children to re-render
-// Consider the above while moving it to state variables
 let provider: ethers.providers.Web3Provider
 
 const useWalletProvider = () => {
@@ -63,7 +59,7 @@ const useWalletProvider = () => {
     return avatarUrl
   }, [])
 
-  // Note, this triggers a re-render on acccount change and on diconnect.
+  // Note: this triggers a re-render on acccount change and on diconnect.
   const disconnect = useCallback(() => {
     if (!web3Modal) return
     web3Modal.clearCachedProvider()

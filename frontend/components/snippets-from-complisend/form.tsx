@@ -100,8 +100,6 @@ export const SetNotesForm = ({ state = {}, onSet }: any): any => {
   )
 }
 
-
-
 export const SetRecieverForm = ({ state = {}, onSet, ownsNFT }: any): any => {
   const [open_form, setFormOpen] = useState(false)
   const [addr, setAddr] = useState('')
@@ -111,12 +109,9 @@ export const SetRecieverForm = ({ state = {}, onSet, ownsNFT }: any): any => {
     })
     setAddr(event.target.value)
   }
-  // console.log(state.address)
 
   const onSubmit = (e: any) => {
     e.preventDefault()
-    // console.log('submit')
-
     setFormOpen(false)
   }
 
@@ -131,7 +126,6 @@ export const SetRecieverForm = ({ state = {}, onSet, ownsNFT }: any): any => {
     <div
       className={cn({
         'flex flex-row bg-green-400 p-4 text-lg w-full rounded-lg outline-4 outline-green-800': true,
-
         // 'bg-white text-black': ownsNFT == true,
         // 'bg-red-500 text-white': ownsNFT == false,
         outline: is_focus,

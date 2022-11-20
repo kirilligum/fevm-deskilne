@@ -1,3 +1,36 @@
+  const location: UserLocation = {
+    address: "",
+    postalCode: "",
+    city: "",
+    countryCode: "",
+    region: ""
+  }
+  const basic: Basics = {
+    name: "",
+    label: "",
+    image: "",
+    email: "",
+    phone: "",
+    url: "",
+    summary: "",
+    location: location,
+    profiles: []
+  };
+  const complexResume: ComplexResume = {
+    basics: basic,
+    work: [],
+    volunteer: [],
+    education: [],
+    awards: [],
+    certificates: [],
+    publications: [],
+    skills: [],
+    languages: [],
+    interests: [],
+    references: [],
+    projects: []
+  };
+
 
 export interface UserLocation {
   address: string;

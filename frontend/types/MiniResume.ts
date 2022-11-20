@@ -1,6 +1,6 @@
 
 export interface  MiniResume{
   name:string;
-  languages: string;
+  technologies: string[];
   yearsOfExperience: number;
 }
