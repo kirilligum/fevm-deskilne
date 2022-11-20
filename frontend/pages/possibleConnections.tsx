@@ -7,7 +7,7 @@ export default function PossibleConnections() {
 
       <main className={styles.main}>
         <h1 className={styles.title}>
-          Welcome to Deskilne
+          Welcome to Sw/.tch
         </h1>
         <p> here data grid with PossibleConnections</p>
       </main>
