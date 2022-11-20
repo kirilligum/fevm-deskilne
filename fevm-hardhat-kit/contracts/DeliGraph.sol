@@ -1,13 +1,18 @@
 // SPDX-License-Identifier: UNLICENSED
 pragma solidity ^0.8.17;
 
-import {SwitchToken} from "./DeliToken.sol";
+import {SwitchToken} from "./SwitchToken.sol";
 import {IFriendsGraph} from "./interfaces/IFriendsGraph.sol";
 import {IReferralIntro} from "./interfaces/IReferralIntro.sol";
 
 contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
     error ConnectionStakeIsTooSmall();
     error UnfriendWithdrwalFailed();
+    error NoFriendConnection();
+    error ReferrerIsNotConnectedToAllParties();
+    error IntroCoverFeeIsTooLow();
+    error NoIntroWithSuchReferrer();
+    error NoIntroWithSuchResource();
 
     struct Intro {
         address referrer;
@@ -18,17 +23,25 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
         bool accepted;
     }
 
+    struct Connection {
+        uint256 amount;
+        bool connected;
+    }
+
     // profiles: address => resume CID
     mapping(address => bytes) profiles;
     // friends graph with staking
-    mapping(address => mapping(address => uint256)) private graph;
+    mapping(address => mapping(address => Connection)) private graph;
     // Cost for introduction
     mapping(address => uint256) listenerCosts;
-    // referred introduction for a fee and slashing mechanics
+    // referred introduction for a fee and slashing mechanics: initiator => Intro
     mapping(address => Intro) introductions;
     // someone has to create a profile without referrals
     bool firstProfileCreated;
+    // Config to check if you can create profile by invites only
     bool referralsEnabled;
+    // Config percentage that referrer gets for intro
+    uint256 referrerPercentage = 1000; // 10%
 
     event FreindRequested(
         address indexed from,
@@ -59,11 +72,16 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
     {
         if (firstProfileCreated && referralsEnabled) {
             // Someone must have staked behind your connection first
-            uint256 referrerStake = graph[referrer][msg.sender];
-            if (msg.value < referrerStake) revert ConnectionStakeIsTooSmall();
+            Connection memory referrerConnection = graph[referrer][msg.sender];
+            if (!referrerConnection.connected) revert NoIntroWithSuchReferrer();
+            if (msg.value < referrerConnection.amount)
+                revert ConnectionStakeIsTooSmall();
 
             // Create the same stake for the bi-directional connection
-            graph[msg.sender][referrer] = referrerStake;
+            graph[msg.sender][referrer] = Connection(
+                referrerConnection.amount,
+                true
+            );
         } else {
             firstProfileCreated = true;
         }
@@ -80,7 +98,7 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
         view
         returns (uint256)
     {
-        return graph[msg.sender][child];
+        return graph[msg.sender][child].amount;
     }
 
     function connectionStrength(address a, address b)
@@ -88,7 +106,7 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
         view
         returns (uint256)
     {
-        return graph[a][b];
+        return graph[a][b].amount;
     }
 
     // stake amount on the connection with to
@@ -104,7 +122,7 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
 
         if (msg.value < amount) revert ConnectionStakeIsTooSmall();
         // Store staked native token (FIL) on connection from sender to a friend
-        graph[msg.sender][to] = amount;
+        graph[msg.sender][to] = Connection(amount, true);
 
         emit FreindRequested(msg.sender, to, amount);
     }
@@ -120,28 +138,32 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
         //     "can't transfer"
         // );
 
-        // TODO: check if friend request happened
-        uint256 amount = graph[from][msg.sender];
-        if (msg.value < amount) revert ConnectionStakeIsTooSmall();
+        Connection memory friendConnection = graph[from][msg.sender];
+        if (!friendConnection.connected) revert NoFriendConnection();
+        if (msg.value < friendConnection.amount)
+            revert ConnectionStakeIsTooSmall();
 
-        graph[msg.sender][from] = amount;
+        graph[msg.sender][from] = Connection(friendConnection.amount, true);
 
-        _mint(msg.sender, amount);
-        _mint(from, amount);
+        _mint(msg.sender, friendConnection.amount);
+        _mint(from, friendConnection.amount);
 
-        emit FriendApproved(from, msg.sender, amount);
+        emit FriendApproved(from, msg.sender, friendConnection.amount);
     }
 
     function unfriend(address from) external {
-        uint256 abAmount = graph[msg.sender][from];
-        uint256 baAmount = graph[from][msg.sender];
+        Connection memory myConnection = graph[msg.sender][from];
+        Connection memory friendConnection = graph[from][msg.sender];
+        if (!myConnection.connected) revert NoFriendConnection();
+        if (!friendConnection.connected) revert NoFriendConnection();
 
-        assert(abAmount == baAmount);
+        // Must be equal at all times, otherwise it's a logic error
+        assert(myConnection.amount == friendConnection.amount);
 
-        graph[msg.sender][from] = 0;
-        graph[from][msg.sender] = 0;
-        _burn(msg.sender, abAmount);
-        _burn(from, baAmount);
+        graph[msg.sender][from] = Connection(0, false);
+        graph[from][msg.sender] = Connection(0, false);
+        _burn(msg.sender, myConnection.amount);
+        _burn(from, friendConnection.amount);
         // require(
         //     IERC20(tokenAddress).transferFrom(address(this), a, abAmount),
         //     "can't transfer"
@@ -150,12 +172,12 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
         //     IERC20(tokenAddress).transferFrom(address(this), b, baAmount),
         //     "can't transfer"
         // );
-        (bool res, ) = msg.sender.call{value: abAmount}("");
+        (bool res, ) = msg.sender.call{value: myConnection.amount}("");
         if (!res) revert UnfriendWithdrwalFailed();
-        (res, ) = from.call{value: baAmount}("");
+        (res, ) = from.call{value: friendConnection.amount}("");
         if (!res) revert UnfriendWithdrwalFailed();
 
-        emit Unfriended(msg.sender, from, abAmount);
+        emit Unfriended(msg.sender, from, myConnection.amount);
     }
 
     // IReferralIntro
@@ -167,16 +189,26 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
         listenerCosts[msg.sender] = amount;
     }
 
-    function introduceInitiator(
-        address initiator,
-        address to,
-        uint256 amountToPayForIntro // listen cost of to + 10%
-    ) external {
+    function introduceInitiator(address initiator, address to) external {
+        // msg.sender is referrer
+        if (
+            !graph[msg.sender][initiator].connected ||
+            !graph[initiator][msg.sender].connected ||
+            !graph[msg.sender][to].connected ||
+            !graph[to][msg.sender].connected
+        ) {
+            revert ReferrerIsNotConnectedToAllParties();
+        }
+
+        // Calculate initator payment costs
+        uint256 listenCost = listenerCosts[to];
+        uint256 referrerAbsoluteFee = (listenCost * referrerPercentage) / 10000; // 10000 = 100 %
+
         // save intro data including amount for intro
         introductions[initiator] = Intro(
             msg.sender,
             to,
-            amountToPayForIntro,
+            listenCost + referrerAbsoluteFee,
             0,
             false,
             false
@@ -184,18 +216,28 @@ contract DeliGraph is SwitchToken, IFriendsGraph, IReferralIntro {
     }
 
     function coverIntroFee(address referrer, address to) external payable {
-        // pay for an introduction + 10%
-        // 10% of the stake of referrer and to are locked
+        Intro storage intro = introductions[msg.sender];
+        if (msg.value < intro.introPayment) {
+            revert IntroCoverFeeIsTooLow();
+        }
+        if (intro.referrer != referrer) revert NoIntroWithSuchReferrer();
+        if (intro.resource != to) revert NoIntroWithSuchResource();
         introductions[msg.sender].paid = true;
+        // 10% of the stake of referrer and to must be locked
     }
 
     function acceptIntro(
         address initiator,
         address referrer,
-        uint256 amountStakedOnNewConnection
+        uint256 proposedStake
     ) external payable {
-        // create a new connection in graph
+        Intro storage intro = introductions[initiator];
+        if (intro.referrer != referrer) revert NoIntroWithSuchReferrer();
+        if (intro.resource != msg.sender) revert NoIntroWithSuchResource();
         introductions[msg.sender].accepted = true;
-        graph[msg.sender][initiator] = amountStakedOnNewConnection;
+
+        // create a new connection in graph
+        if (msg.value < proposedStake) revert ConnectionStakeIsTooSmall();
+        graph[msg.sender][initiator] = Connection(proposedStake, true);
     }
 }
