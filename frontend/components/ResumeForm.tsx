@@ -49,17 +49,19 @@ export function ResumeForm(props: { callback: (v: Resume) => void }): JSX.Elemen
     console.log("The tag at index " + index + " was clicked");
   };
 
+  const submitHandler = (e: { preventDefault: () => void; }) => {
+    e.preventDefault();
+    const resume: MiniResume = {
+      name: name,
+      technologies: tags.map((v) => v.text),
+      yearsOfExperience: yearsOfExperience,
+    };
+    props.callback(resume);
+  };
+
   return (
     <form
-      onSubmit={(e) => {
-        e.preventDefault();
-        const resume: MiniResume = {
-          name: name,
-          technologies: tags.map((v) => v.text),
-          yearsOfExperience: yearsOfExperience,
-        };
-        props.callback(resume);
-      }}
+      onSubmit={submitHandler}
     >
       <h2>Create new resume </h2>
       <label htmlFor="message">Username:</label>

@@ -1,13 +1,16 @@
 import { useState } from "react";
 import {
+  useAccount,
   useContractWrite,
   usePrepareContractWrite,
   useWaitForTransaction,
 } from "wagmi";
 import { ControlFunctions, useDebounce } from "use-debounce";
 
-export function MintNFTForm(props:{adddress:string}): JSX.Element {
+export function MintNFTForm(props: { adddress: string }): JSX.Element {
   const [tokenId, setTokenId] = useState("");
+
+  const { address } = useAccount()
   const debouncedTokenId: [string, ControlFunctions] = useDebounce(
     tokenId,
     500,
@@ -16,14 +19,14 @@ export function MintNFTForm(props:{adddress:string}): JSX.Element {
     address: props.adddress,
     abi: [
       {
-        name: "mint",
+        name: "introduceInitiator",
         type: "function",
         stateMutability: "nonpayable",
         inputs: [{ internalType: "uint32", name: "tokenId", type: "uint32" }],
         outputs: [],
       },
     ],
-    functionName: "mint",
+    functionName: "introduceInitiator",
     args: [parseInt(debouncedTokenId[0])],
     enabled: Boolean(debouncedTokenId[0]),
   });
