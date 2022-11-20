@@ -1,20 +1,14 @@
-import React, { useEffect } from 'react'
+import { InboxIcon } from '@heroicons/react/24/solid'
+import { Conversation, DecodedMessage } from '@xmtp/xmtp-js'
+import { truncate } from 'lodash'
 import Link from 'next/link'
-import { ChatIcon } from '@heroicons/react/outline'
-import Address from './Address'
 import { useRouter } from 'next/router'
-import { Conversation } from '@xmtp/xmtp-js'
-import { DecodedMessage } from '@xmtp/xmtp-js'
-import {
-  classNames,
-  truncate,
-  formatDate,
-  checkPath,
-  checkIfPathIsEns,
-} from '../helpers'
-import Avatar from './Avatar'
-import { useAppStore } from '../store/app'
-import useWalletProvider from '../hooks/useWalletProvider'
+import React, { useEffect } from 'react'
+import { useAppStore } from '../AppState'
+import AddressPill from './AddressPill'
+import classNames from './classNames'
+import { checkIfPathIsEns, checkPath, formatDate } from './string'
+import useWalletProvider from './useWalletProvider'
 
 type ConversationTileProps = {
   conversation: Conversation
@@ -72,13 +66,10 @@ const ConversationTile = ({
             isSelected ? 'bg-bt-200' : null
           )}
         >
-          <Avatar peerAddress={conversation.peerAddress} />
           <div className="py-4 sm:text-left text w-full">
             <div className="grid-cols-2 grid">
-              <Address
-                address={conversation.peerAddress}
-                className="text-black text-lg md:text-md font-bold place-self-start"
-              />
+              <AddressPill
+                address={conversation.peerAddress} userAddress={''} />
               <span
                 className={classNames(
                   'text-lg md:text-sm font-normal place-self-end',
@@ -96,7 +87,7 @@ const ConversationTile = ({
                 loadingConversations ? 'animate-pulse' : ''
               )}
             >
-              {latestMessage && truncate(latestMessage.content, 75)}
+              {latestMessage && truncate(latestMessage.content, { length: 75 })}
             </p>
           </div>
         </div>
@@ -172,7 +163,7 @@ const NoConversationsMessage = (): JSX.Element => {
   return (
     <div className="flex flex-col flex-grow justify-center h-[100%]">
       <div className="flex flex-col items-center px-4 text-center">
-        <ChatIcon
+        <InboxIcon
           className="h-8 w-8 mb-1 stroke-n-200 md:stroke-n-300"
           aria-hidden="true"
         />

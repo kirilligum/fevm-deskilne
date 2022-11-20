@@ -29,7 +29,6 @@ export function ResumeForm(props: { callback: (v: Resume) => void }): JSX.Elemen
     { id: "Turkey", text: "Turkey" },
   ]);
 
-
   const handleDelete = (i: number) => {
     setTags(tags.filter((tag, index) => index !== i));
   };
@@ -59,7 +58,6 @@ export function ResumeForm(props: { callback: (v: Resume) => void }): JSX.Elemen
           technologies: tags.map((v) => v.text),
           yearsOfExperience: yearsOfExperience,
         };
-
         props.callback(resume);
       }}
     >
