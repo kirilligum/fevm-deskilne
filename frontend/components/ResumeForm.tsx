@@ -1,9 +1,9 @@
 import { useState } from "react";
-import { Tag, WithContext as ReactTags } from "react-tag-input";
-import { MiniResume } from "../types/MiniResume";
 import NumericInput from "react-numeric-input";
-import { SimpleResume } from "../types/SimpleResume";
+import { Tag, WithContext as ReactTags } from "react-tag-input";
 import { ComplexResume } from "../types/ComplexResume";
+import { MiniResume } from "../types/MiniResume";
+import { SimpleResume } from "../types/SimpleResume";
 
 
 const techTags: Tag[] = [
@@ -51,7 +51,6 @@ export function ResumeForm(props: { callback: (v: Resume) => void }): JSX.Elemen
 
   return (
     <form
-      style={{ height: '80vh' }}
       onSubmit={(e) => {
         e.preventDefault();
         const resume: MiniResume = {
@@ -62,6 +61,7 @@ export function ResumeForm(props: { callback: (v: Resume) => void }): JSX.Elemen
         props.callback(resume);
       }}
     >
+      <h2>Create new resume </h2>
       <label htmlFor="message">Username:</label>
       <textarea
         style={{ height: '25px', color: 'black' }}
